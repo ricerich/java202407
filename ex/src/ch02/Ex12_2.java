@@ -42,6 +42,8 @@ public class Ex12_2
 				return;
 		}
 		
+		System.out.println(x+" "+op+" "+y+"의 결과는 "+res);
+		sc1.close();
 		
 	}
 
