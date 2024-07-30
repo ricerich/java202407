@@ -44,7 +44,6 @@ public class Ex03 {
 		if(cnt > 0)
 			System.out.println("10원 "+ cnt +"매");
 	}
-
 }
 
 
