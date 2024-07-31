@@ -9,9 +9,7 @@ public class Ex01
 		{
 			sum = sum+i;
 		}
-		
 		System.out.println("1~99사이의 짝수의 합"+sum);
-
 	}
 
 }
