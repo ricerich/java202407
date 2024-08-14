@@ -1,0 +1,111 @@
+--1. 마당서점의 고객이 요구하는 다음 질문에 대해 SQL 문을 작성하시오.
+--  (5) 박지성이 구매한 도서의 출판사 수
+    SELECT COUNT(DISTINCT PUBLISHER)
+    FROM CUSTOMER A, ORDERS B, BOOK C
+    WHERE A.CUSTID = B.CUSTID
+      AND B.BOOKID = C.BOOKID
+      AND NAME LIKE '박지성';
+      
+    SELECT COUNT(DISTINCT PUBLISHER)
+    FROM CUSTOMER A JOIN ORDERS B ON A.CUSTID = B.CUSTID 
+                    JOIN BOOK C   ON B.BOOKID = C.BOOKID
+    WHERE 
+          NAME LIKE '박지성';
+
+--  (6) 박지성이 구매한 도서의 이름, 가격, 정가와 판매가격의 차이
+    SELECT BOOKNAME, PRICE, PRICE-SALEPRICE
+    FROM CUSTOMER A, ORDERS B, BOOK C
+    WHERE A.CUSTID = B.CUSTID
+      AND B.BOOKID = C.BOOKID
+      AND NAME LIKE '박지성';
+
+--  (7) 박지성이 구매하지 않은 도서의 이름
+--방법1: 차집합 : 전체 - 박지성    
+   SELECT BOOKNAME
+     FROM BOOK
+   MINUS 
+   SELECT BOOKNAME
+    FROM CUSTOMER A, ORDERS B, BOOK C
+    WHERE A.CUSTID = B.CUSTID
+      AND B.BOOKID = C.BOOKID
+      AND NAME LIKE '박지성';
+--방법2: NOT IN   
+   SELECT BOOKNAME
+     FROM BOOK
+    WHERE BOOKNAME NOT IN ( SELECT BOOKNAME
+                              FROM CUSTOMER A, ORDERS B, BOOK C
+                             WHERE A.CUSTID = B.CUSTID
+                               AND B.BOOKID = C.BOOKID
+                               AND NAME LIKE '박지성');
+
+--방법3: NOT EXISTS   
+   SELECT BOOKNAME
+     FROM BOOK C
+    WHERE NOT EXISTS ( SELECT BOOKNAME
+                         FROM CUSTOMER A, ORDERS B
+                        WHERE A.CUSTID = B.CUSTID
+                          AND B.BOOKID = C.BOOKID                          
+                          AND NAME LIKE '박지성');
+
+--2. 마당서점의 운영자와 경영자가 요구하는 다음 질문에 대해 SQL 문을 작성하시오.
+--  (8) 주문하지 않은 고객의 이름(조인 사용)
+    --방법1:차집합
+    SELECT NAME 
+      FROM CUSTOMER
+    MINUS
+    SELECT NAME
+      FROM CUSTOMER A, ORDERS B
+     WHERE A.CUSTID = B.CUSTID;
+      
+    --방법2:NOT IN
+    SELECT NAME
+      FROM CUSTOMER
+     WHERE NAME NOT IN (SELECT DISTINCT NAME
+                          FROM CUSTOMER A, ORDERS B
+                         WHERE A.CUSTID = B.CUSTID);    
+    
+    --방법3:NOT EXISTS
+    SELECT NAME
+      FROM CUSTOMER C
+     WHERE NOT EXISTS (SELECT NAME
+                         FROM ORDERS B
+                        WHERE C.CUSTID = B.CUSTID); 
+
+--  (9) 주문 금액의 총액과 주문의 평균 금액
+    SELECT SUM(SALEPRICE), AVG(SALEPRICE) FROM ORDERS;
+
+--  (10) 고객의 이름과 고객별 구매액
+        SELECT NAME, SUM(SALEPRICE)
+          FROM CUSTOMER A JOIN ORDERS B 
+                            ON A.CUSTID = B.CUSTID
+      GROUP BY NAME;
+          
+    
+--  (11) 고객의 이름과 고객이 구매한 도서 목록
+    SELECT NAME,BOOKNAME
+      FROM CUSTOMER A, ORDERS B, BOOK C
+     WHERE A.CUSTID = B.CUSTID
+       AND B.BOOKID = C.BOOKID;
+
+    SELECT NAME,BOOKNAME
+      FROM CUSTOMER A JOIN ORDERS B
+                        ON A.CUSTID = B.CUSTID
+                      JOIN BOOK C
+                        ON B.BOOKID = C.BOOKID;     
+--  (12) 도서의 가격(Book 테이블)과 판매가격(Orders 테이블)의 차이가 
+--       가장 많은 주문       
+        SELECT PRICE-SALEPRICE, ORDERID
+          FROM ORDERS A JOIN BOOK B 
+                          ON A.BOOKID = B.BOOKID
+         WHERE PRICE-SALEPRICE = (SELECT max(PRICE-SALEPRICE)
+                                    FROM ORDERS A JOIN BOOK B 
+                                      ON A.BOOKID = B.BOOKID );
+                                   
+--  (13) 도서의 판매액 평균보다 자신의 구매액 평균이 더 높은 고객의 이름
+        SELECT NAME, AVG(SALEPRICE)
+          FROM CUSTOMER JOIN ORDERS 
+                          ON CUSTOMER.CUSTID = ORDERS.CUSTID
+      GROUP BY NAME
+        HAVING AVG(SALEPRICE) > (SELECT AVG(SALEPRICE)
+                                   FROM ORDERS);   
+
