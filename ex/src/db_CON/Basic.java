@@ -16,11 +16,36 @@ public class Basic
 		
 		bs1.conn();
 		bs1.getBookList();
+//		bs1.BookArr();//배열출력
 		
-		bs1.conn();
-		bs1.getCustomerList();
+		//4.객체 배열 출력 메소드 호출(사용)
+//		bs1.BookArr.printBook_o;
+		int size = bs1.getBookArr().length;
+		for(int i=0; i<size ; i++)
+		{
+//			System.out.print(bs1.getBookArr()[i].getBookid() +"\t");
+//			System.out.print(bs1.getBookArr()[i].getBookname()+"\t");
+//			System.out.print(bs1.getBookArr()[i].getPublisher()+"\t");
+//			System.out.println(bs1.getBookArr()[i].getPrice());
+			
+			bs1.getBookArr()[i].printBook();
+		}
 		
-		bs1.conn();
-		bs1.getBookList();
+		Book bookArr1[] = bs1.getBookArr();
+		for(int i=0; i<size ; i++)
+		{
+//			System.out.print(bookArr1[i].getBookid() +"\t");
+//			System.out.print(bookArr1[i].getBookname() +"\t");
+//			System.out.print(bookArr1[i].getPublisher() +"\t");
+//			System.out.println(bookArr1[i].getPrice());
+			
+			bookArr1[i].printBook();
+		}
+		
+//		bs1.conn();
+//		bs1.getCustomerList();
+//		
+//		bs1.conn();
+//		bs1.getBookList();
 	}
 }
