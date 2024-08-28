@@ -6,5 +6,4 @@ public class Ex01 {
 		MyPoint a = new MyPoint(3,20);
 		System.out.println(a);
 	}
-
 }
