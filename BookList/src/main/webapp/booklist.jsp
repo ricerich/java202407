@@ -46,13 +46,23 @@ ResultSet rs = stmt.executeQuery("SELECT * FROM BOOK");
 			<td width="150" height="20">
 				<p>
 					<span style="font-size: 9pt;"> 
-					<a href="bookview.jsp?bookid=<%=W_BOOKID%>"> <font face="돋움체"
-							color="black"> <%=W_BOOKNAME%></font></a></span>
+						<a href="bookview.jsp?bookid=<%=W_BOOKID%>"> 
+							<font face="돋움체" color="black">
+								<%=W_BOOKNAME%>
+							</font>
+						</a>
+					</span>
 				</p>
 			</td>
 			<td width="150" height="20">
 				<p align="center">
-					<span style="font-size: 9pt;"> <font face="돋움체"><%=W_PUBLISHER%></font></span>
+					<span style="font-size: 9pt;"> 
+						<a href="publisher_view.jsp?publisher=<%=W_PUBLISHER%>"> 
+							<font face="돋움체">
+								<%=W_PUBLISHER%>
+							</font>
+						</a>
+					</span>
 				</p>
 			</td>
 
